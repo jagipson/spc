@@ -28,6 +28,10 @@ func (k kmlDoc) Updated() time.Time {
 	updated := strings.Split(k.Description, "\n")[2]
 	t, err := time.Parse("Issue Time 0304 PM MST Mon Jan 02 2006<br />", updated)
 	if err != nil {
+		// Fallback format
+		t, err = time.Parse("Issue Time 20060102 200601021504Z<br />", updated)
+	}
+	if err != nil {
 		fmt.Println(err)
 		return time.Time{}
 	}
@@ -58,7 +62,8 @@ func (k kmlFolder) Tag() string {
 	case "sigtorn":
 		result = "Significant tornado (EF2 or greater) within 25 miles"
 	default:
-		result = words[len(words)-1]
+		// Assume it's a tstm file:
+		result = "Risk of T'Strm within 12 miles"
 	}
 	return result
 }

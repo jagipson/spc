@@ -181,6 +181,7 @@ func main() {
 
 	beginT := time.Time{}
 	endT := time.Time{}
+	noSignWeather := true
 
 FolderLoop:
 	for _, folder := range doc.Folders {
@@ -206,7 +207,11 @@ FolderLoop:
 				}
 				// here testPoint is inside outer polly but outside inner ones
 				fmt.Printf("%s: %s\n", folder.Tag(), placemark.Name)
+				noSignWeather = false
 			}
 		}
+	}
+	if noSignWeather {
+		fmt.Printf("No significant threat\n")
 	}
 }
